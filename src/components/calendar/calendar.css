@@ -1,0 +1,17 @@
+table {
+	border: 1px solid black;
+}
+
+table,
+th,
+td {
+	border: 1px solid black;
+}
+
+.today {
+	background-color: gray;
+}
+
+.selectedDay {
+	background-color: orange;
+}
