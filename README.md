@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Backlog
+- Input validation
+- Add booking form
+- Add delete booking functionality for admin
+- Add logout button
+
 ## Available Scripts
 
 In the project directory, you can run:
