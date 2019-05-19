@@ -6,6 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Add delete booking functionality for admin
 - Add logout button
 
+Backend at https://github.com/Jimpodini/fotidyllen-backend
+
 ## Available Scripts
 
 In the project directory, you can run:
