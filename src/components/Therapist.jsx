@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Therapist = ({ img }) => {
+const Therapist = ({ img, title, text }) => {
 	return (
 		<TherapistWrapper className="mx-auto px-3">
 			<div className="card" style={{ width: '18rem' }}>
 				<div className="img-container">
 					<img className="card-img-top" src={img} alt="Card image cap" />
-					<button className="btn btn-secondary book-btn">Boka</button>
+					<a href="/booking">
+						<button className="btn btn-secondary book-btn">Boka</button>
+					</a>
 				</div>
 				<div className="card-body">
-					<h5 className="card-title">Card title</h5>
-					<p className="card-text">
-						Some quick example text to build on the card title and make up the bulk of the card's content.
-					</p>
-					<a href="#" className="btn btn-primary">
-						Go somewhere
+					<h5 className="card-title">{title}</h5>
+					<p className="card-text">{text}</p>
+					<a href="/booking" className="btn btn-primary">
+						Boka tid
 					</a>
 				</div>
 			</div>

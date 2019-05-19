@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import http from '../../services/httpService';
+import Slot from './slot';
 
 class SlotsList extends Component {
 	state = { slots: [], isLoading: true };
@@ -32,9 +33,9 @@ class SlotsList extends Component {
 
 		//console.log(availableSlots);
 		return (
-			<React.Fragment>
-				<ol>{slots.map((slot) => <li key={slot._id}>{`${slot.startingTime}-${slot.endTime}`}</li>)}</ol>
-			</React.Fragment>
+			<div style={{ width: '200px', marginLeft: '30px' }}>
+				<ol>{slots.map((slot) => <Slot key={slot._id} slot={slot} />)}</ol>
+			</div>
 		);
 	}
 }

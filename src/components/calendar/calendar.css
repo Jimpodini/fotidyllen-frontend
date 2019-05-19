@@ -6,12 +6,18 @@ table,
 th,
 td {
 	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
 }
 
 .today {
 	background-color: gray;
 }
 
+.dateWithBooking {
+	background-color: rgb(176, 214, 176);
+}
+
 .selectedDay {
-	background-color: orange;
+	background-color: pink;
 }

@@ -7,22 +7,34 @@ moment.locale('sv');
 
 export default class Calendar extends React.Component {
 	state = {
-		dateObject: moment(),
+		//dateObject: moment(),
 		today: moment(),
 		selection: false
 		//selectedDay: 0
 	};
 	weekdayshort = moment.weekdaysShort();
 
+	componentDidMount() {
+		console.log('mounted');
+	}
+
+	dateToFormat = (day) => {
+		const { selectedDate } = this.props;
+		const yearNumber = selectedDate.format('YYYY');
+		const monthNumber = selectedDate.format('MM');
+		const dayNumber = day > 9 ? day : '0' + day;
+		return `${yearNumber}-${monthNumber}-${dayNumber}`;
+	};
+
 	firstDayOfMonth = () => {
-		let dateObject = this.state.dateObject;
-		let firstDay = moment(dateObject).startOf('month').format('d');
+		const { selectedDate } = this.props;
+		const firstDay = moment(selectedDate).startOf('month').format('d');
 		return firstDay;
 	};
 
 	daysInMonth = () => {
-		const { dateObject } = this.state;
-		return moment(dateObject).daysInMonth();
+		const { selectedDate } = this.props;
+		return moment(selectedDate).daysInMonth();
 	};
 
 	currentDay = () => {
@@ -30,7 +42,7 @@ export default class Calendar extends React.Component {
 	};
 
 	month = () => {
-		return this.state.dateObject.format('MMMM');
+		return this.props.selectedDate.format('MMMM');
 	};
 
 	currentMonth = () => {
@@ -38,19 +50,19 @@ export default class Calendar extends React.Component {
 	};
 
 	nextMonth = () => {
-		const { dateObject } = this.state;
-		let dateObjectNextMonth = moment(dateObject).set('month', dateObject.month() + 1);
-		this.setState({ dateObject: dateObjectNextMonth });
+		const { selectedDate, onSelect } = this.props;
+		let dateObjectNextMonth = moment(selectedDate).set('month', selectedDate.month() + 1);
+		onSelect(dateObjectNextMonth);
 	};
 
 	previousMonth = () => {
-		const { dateObject } = this.state;
-		let dateObjectPreviousMonth = moment(dateObject).set('month', dateObject.month() - 1);
-		this.setState({ dateObject: dateObjectPreviousMonth });
+		const { selectedDate, onSelect } = this.props;
+		let dateObjectPreviousMonth = moment(selectedDate).set('month', selectedDate.month() - 1);
+		onSelect(dateObjectPreviousMonth);
 	};
 
 	year = () => {
-		return this.state.dateObject.format('Y');
+		return this.props.selectedDate.format('Y');
 	};
 
 	currentYear = () => {
@@ -58,38 +70,31 @@ export default class Calendar extends React.Component {
 	};
 
 	nextYear = () => {
-		const { dateObject } = this.state;
-		let dateObjectNextYear = moment(dateObject).set('year', dateObject.year() + 1);
-		this.setState({ dateObject: dateObjectNextYear });
+		const { selectedDate, onSelect } = this.props;
+		let dateObjectNextYear = moment(selectedDate).set('year', selectedDate.year() + 1);
+		onSelect(dateObjectNextYear);
 	};
 
 	previousYear = () => {
-		const { dateObject } = this.state;
-		let dateObjectPreviousYear = moment(dateObject).set('year', dateObject.year() - 1);
-		this.setState({ dateObject: dateObjectPreviousYear });
+		const { selectedDate, onSelect } = this.props;
+		let dateObjectPreviousYear = moment(selectedDate).set('year', selectedDate.year() - 1);
+		onSelect(dateObjectPreviousYear);
 	};
 
 	onDayClick = (e, d) => {
-		const { dateObject } = this.state;
-		const { onSelect } = this.props;
+		const { selectedDate, onSelect } = this.props;
 
-		let dateObjectSelectedDate = moment(dateObject).date(d);
+		let dateObjectSelectedDate = moment(selectedDate).date(d);
 
-		this.setState(
-			{
-				selection: true,
-				dateObject: dateObjectSelectedDate
-			},
-			() => {
-				onSelect(dateObjectSelectedDate.format('YYYY-MM-DD'));
-			}
-		);
+		onSelect(dateObjectSelectedDate);
 	};
 
 	render() {
-		const { dateObject, selection } = this.state;
+		console.log(this.props.datesWithBookings);
+		const { selection } = this.state;
+		const { selectedDate, datesWithBookings } = this.props;
 
-		console.log(this.state.dateObject.format('YYYY-MM-DD'));
+		console.log(selectedDate.format('YYYY-MM-DD'));
 
 		let weekdayshortname = this.weekdayshort.map((day) => {
 			return (
@@ -114,9 +119,10 @@ export default class Calendar extends React.Component {
 				this.currentDay() == d && this.month() == this.currentMonth() && this.year() == this.currentYear()
 					? 'today'
 					: '';
-			let selectedDay = dateObject.format('D') == d && selection ? 'selectedDay' : '';
+			const dateWithBooking = datesWithBookings.includes(this.dateToFormat(d)) ? 'dateWithBooking' : '';
+			let selectedDay = selectedDate.format('D') == d ? 'selectedDay' : '';
 			daysInMonth.push(
-				<td key={d} className={`calendar-day ${currentDay} ${selectedDay}`}>
+				<td key={d} className={`calendar-day ${currentDay} ${selectedDay} ${dateWithBooking}`}>
 					<span
 						onClick={(e) => {
 							this.onDayClick(e, d);
@@ -152,16 +158,23 @@ export default class Calendar extends React.Component {
 
 		return (
 			<div>
-				<h2>Calendar</h2>
-				<div className="month">
-					<button onClick={() => this.previousMonth()}>Prev.</button>
-					{this.month()}
-					<button onClick={() => this.nextMonth()}>Next</button>
+				<div className="row mb-2">
+					<button className="col btn btn-primary" onClick={() => this.previousMonth()}>
+						<i class="fas fa-arrow-left" />
+					</button>
+					<div className="col text-center my-auto">{this.month()}</div>
+					<button className="col btn btn-primary" onClick={() => this.nextMonth()}>
+						<i class="fas fa-arrow-right" />
+					</button>
 				</div>
-				<div className="year">
-					<button onClick={() => this.previousYear()}>Prev.</button>
-					{this.year()}
-					<button onClick={() => this.nextYear()}>Next</button>
+				<div className="row mb-2">
+					<button className="col btn btn-primary" onClick={() => this.previousYear()}>
+						<i class="fas fa-arrow-left" />
+					</button>
+					<div className="col text-center my-auto">{this.year()}</div>
+					<button className="col btn btn-primary" onClick={() => this.nextYear()}>
+						<i class="fas fa-arrow-right" />
+					</button>
 				</div>
 				<table>
 					<thead>
