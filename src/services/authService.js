@@ -1,8 +1,7 @@
-import { apiUrl } from '../config.json';
 import http from './httpService';
 import jwtDecode from 'jwt-decode';
 
-const apiEndpoint = apiUrl + '/auth';
+const apiEndpoint = '/auth';
 const tokenKey = 'token';
 
 export async function login(email, password) {
