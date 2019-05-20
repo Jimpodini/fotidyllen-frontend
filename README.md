@@ -5,6 +5,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Add booking form
 - Add delete booking functionality for admin
 - Add logout button
+- Verification on adding a booking
+
+Live project available at: https://fotidyllen.herokuapp.com/home
 
 Backend at https://github.com/Jimpodini/fotidyllen-backend
 
